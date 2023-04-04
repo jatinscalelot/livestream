@@ -26,6 +26,7 @@ var viewers = [];
 var noPresenterMessage = 'No active presenter. Try again later...';
 /* Server startup */
 var asUrl = url.parse(argv.as_uri);
+console.log('asUrl', asUrl);
 var port = asUrl.port;
 var server = https.createServer(options, app).listen(port, function() {
     console.log('Kurento Tutorial started');
