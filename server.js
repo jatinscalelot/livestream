@@ -316,8 +316,8 @@ function stop(sessionId) {
 
 	if (viewers.length < 1 && !presenter) {
         console.log('Closing kurento client');
-        kurentoClient.close();
-        kurentoClient = null;
+       // kurentoClient.close();
+       // kurentoClient = null;
     }
 }
 
