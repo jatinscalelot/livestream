@@ -26,7 +26,6 @@ var viewers = [];
 var noPresenterMessage = 'No active presenter. Try again later...';
 /* Server startup */
 var asUrl = url.parse(argv.as_uri);
-console.log('asUrl', asUrl);
 var port = asUrl.port;
 var server = https.createServer(options, app).listen(port, function() {
     console.log('Kurento Tutorial started');
@@ -40,13 +39,12 @@ function nextUniqueId() {
 	idCounter++;
 	return idCounter.toString();
 }
-
 /* Management of WebSocket messages */
 wss.on('connection', function(ws) {
 	var sessionId = nextUniqueId();
 	console.log('Connection received with sessionId ' + sessionId);
     ws.on('error', function(error) {
-        console.log('Connection ' + sessionId + ' error');
+        console.log('Connection ' + sessionId + ' error ->', error);
         stop(sessionId);
     });
     ws.on('close', function() {
