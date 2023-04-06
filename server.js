@@ -29,9 +29,9 @@ var server = https.createServer(options, app).listen(port, function() {
     console.log('Kurento Tutorial started');
     console.log('Open ' + url.format(asUrl) + ' with a WebRTC capable browser');
 });
-app.get('/', async (req, res) => {
-	console.log('here in app.get');
-});
+// app.get('/', async (req, res) => {
+// 	console.log('here in app.get');
+// });
 var wss = new ws.Server({
     server : server,
     path : '/one2many'
@@ -337,4 +337,4 @@ function onIceCandidate(sessionId, _candidate) {
         candidatesQueue[sessionId].push(candidate);
     }
 }
-app.use(express.static(path.join(__dirname, 'static')));
+// app.use(express.static(path.join(__dirname, 'static')));
