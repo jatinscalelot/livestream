@@ -38,7 +38,7 @@ function nextUniqueId() {
 	return idCounter.toString();
 }
 wss.on('connection', function(ws) {
-
+	console.log('req', req);
 	var sessionId = nextUniqueId();
 	console.log('Connection received with sessionId ' + sessionId);
 
