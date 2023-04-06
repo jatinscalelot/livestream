@@ -15,6 +15,8 @@
  *
  */
 
+console.log('location.host', location.host);
+
 var ws = new WebSocket('wss://' + location.host + '/one2many');
 var video;
 var webRtcPeer;
