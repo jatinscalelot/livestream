@@ -58,7 +58,7 @@
         </div>
         <div class="col-md-7">
           <div id="videoBig">
-            <video id="video" autoplay width="640px" height="480px" poster="img/webrtc.png" controls playsinline poster></video>
+            <video id="video" autoplay width="640px" height="480px" poster="img/webrtc.png" controls playsinline></video>
           </div>
         </div>
       </div>
@@ -92,3 +92,11 @@
 
   </body>
 </html>
+<script>
+  function getParams() {
+    var idx = document.URL.indexOf('?');
+    var params = {};
+    console.log('idx', idx);
+}
+getParams();
+</script>
