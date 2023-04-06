@@ -1,20 +1,3 @@
-/*
- * (C) Copyright 2014-2015 Kurento (http://kurento.org/)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 var path = require('path');
 var url = require('url');
 var express = require('express');
@@ -23,55 +6,40 @@ var ws = require('ws');
 var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
-
 var argv = minimist(process.argv.slice(2), {
     default: {
         as_uri: 'http://stun.festumevento.com:8443/',
         ws_uri: 'ws://live.festumevento.in:8888/kurento'
     }
 });
-
-var options =
-{
+var options = {
   key:  fs.readFileSync('keys/server.key'),
   cert: fs.readFileSync('keys/server.crt')
 };
-
 var app = express();
-
-/*
- * Definition of global variables.
- */
 var idCounter = 0;
 var candidatesQueue = {};
 var kurentoClient = null;
 var presenter = null;
 var viewers = [];
 var noPresenterMessage = 'No active presenter. Try again later...';
-
-/*
- * Server startup
- */
 var asUrl = url.parse(argv.as_uri);
 var port = asUrl.port;
 var server = https.createServer(options, app).listen(port, function() {
     console.log('Kurento Tutorial started');
     console.log('Open ' + url.format(asUrl) + ' with a WebRTC capable browser');
 });
-
+app.get('/', async (req, res) => {
+	console.log('here in app.get');
+});
 var wss = new ws.Server({
     server : server,
     path : '/one2many'
 });
-
 function nextUniqueId() {
 	idCounter++;
 	return idCounter.toString();
 }
-
-/*
- * Management of WebSocket messages
- */
 wss.on('connection', function(ws) {
 
 	var sessionId = nextUniqueId();
@@ -144,12 +112,6 @@ wss.on('connection', function(ws) {
         }
     });
 });
-
-/*
- * Definition of functions
- */
-
-// Recover kurentoClient for the first time.
 function getKurentoClient(callback) {
     if (kurentoClient !== null) {
         return callback(null, kurentoClient);
@@ -166,7 +128,6 @@ function getKurentoClient(callback) {
         callback(null, kurentoClient);
     });
 }
-
 function startPresenter(sessionId, ws, sdpOffer, callback) {
 	clearCandidatesQueue(sessionId);
 
@@ -256,7 +217,6 @@ function startPresenter(sessionId, ws, sdpOffer, callback) {
         });
 	});
 }
-
 function startViewer(sessionId, ws, sdpOffer, callback) {
 	clearCandidatesQueue(sessionId);
 
@@ -326,13 +286,11 @@ function startViewer(sessionId, ws, sdpOffer, callback) {
 	    });
 	});
 }
-
 function clearCandidatesQueue(sessionId) {
 	if (candidatesQueue[sessionId]) {
 		delete candidatesQueue[sessionId];
 	}
 }
-
 function stop(sessionId) {
 	if (presenter !== null && presenter.id == sessionId) {
 		for (var i in viewers) {
@@ -360,7 +318,6 @@ function stop(sessionId) {
         kurentoClient = null;
     }
 }
-
 function onIceCandidate(sessionId, _candidate) {
     var candidate = kurento.getComplexType('IceCandidate')(_candidate);
 
@@ -380,5 +337,4 @@ function onIceCandidate(sessionId, _candidate) {
         candidatesQueue[sessionId].push(candidate);
     }
 }
-
 app.use(express.static(path.join(__dirname, 'static')));
