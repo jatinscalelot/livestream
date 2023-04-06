@@ -25,7 +25,8 @@ var viewers = [];
 var noPresenterMessage = 'No active presenter. Try again later...';
 var asUrl = url.parse(argv.as_uri);
 var port = asUrl.port;
-var server = https.createServer(options, app).listen(port, function() {
+var server = https.createServer(options, app).listen(port, function(req, res) {
+	console.log('req', req);
     console.log('Kurento Tutorial started');
     console.log('Open ' + url.format(asUrl) + ' with a WebRTC capable browser');
 });
@@ -38,7 +39,7 @@ function nextUniqueId() {
 	return idCounter.toString();
 }
 wss.on('connection', function(ws) {
-	console.log('req', req);
+
 	var sessionId = nextUniqueId();
 	console.log('Connection received with sessionId ' + sessionId);
 
