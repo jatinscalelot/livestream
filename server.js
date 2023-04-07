@@ -38,7 +38,6 @@ function nextUniqueId() {
 	return idCounter.toString();
 }
 wss.on('connection', function(ws) {
-	console.log('ws', ws);
 	var sessionId = nextUniqueId();
 	console.log('Connection received with sessionId ' + sessionId);
 
@@ -337,7 +336,7 @@ function onIceCandidate(sessionId, _candidate) {
 // app.use(express.static(path.join(__dirname, 'static')), (req, res) => {
 // 	console.log('req', req);
 // });
-app.use(express.static(path.join(__dirname, 'static')))
+app.use(express.static(path.join(__dirname, 'static')));
 app.get('/', function (req, res, next) {
 	console.log('req', req);
     res.render('index');
