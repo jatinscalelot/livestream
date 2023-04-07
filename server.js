@@ -339,5 +339,5 @@ function onIceCandidate(sessionId, _candidate) {
 app.use(express.static(path.join(__dirname, 'static')));
 app.get('/aaa', function (req, res, next) {
 	console.log('req', req);
-    res.render('index');
+    res.render('index.ejs');
 })
