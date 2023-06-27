@@ -310,7 +310,7 @@ function onIceCandidate(type, sessionId, _candidate) {
 // 	console.log('req', req);
 // });
 app.get('/:sessionId', function (req, res, next) {
-	console.log(req.params);
+	console.log('req params',req.params);
 	res.redirect('https://livestream.festumevento.com/?sessionId='+req.params.sessionId)
 });
 app.use(express.static(path.join(__dirname, 'static')));
