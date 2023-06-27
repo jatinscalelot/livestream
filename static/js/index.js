@@ -1,6 +1,11 @@
-var ws = new WebSocket('wss://' + location.host + '/one2many');
+
+const urlParams = new URLSearchParams(window.location.search);
+const sessionId = urlParams.get('sessionId');
+
+var ws = new WebSocket('wss://' + location.host + '/one2many?sessionId='+sessionId);
 var video;
 var webRtcPeer;
+var type = 'pub';
 
 window.onload = function() {
 	console = new Console();
@@ -85,6 +90,7 @@ function onOfferPresenter(error, offerSdp) {
 }
 
 function viewer() {
+	type = 'sub';
 	if (!webRtcPeer) {
 		showSpinner(video);
 
@@ -140,6 +146,7 @@ function dispose() {
 }
 
 function sendMessage(message) {
+	message.type = type;
 	var jsonMessage = JSON.stringify(message);
 	console.log('Sending message: ' + jsonMessage);
 	ws.send(jsonMessage);
